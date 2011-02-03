@@ -17,34 +17,8 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-ENV["RAILS_ENV"] = "test"
-require File.expand_path('../../config/application', __FILE__)
+require 'orion6_plugin/orion6'
 
-require 'rails/test_help'
-
-$LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
-
-ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
-
-require File.expand_path('../../lib/generators/orion6/templates/migration.rb', __FILE__)
-
-class Test::Unit::TestCase
-  class << self
-    def migrated?
-      @migrated ||= false
-    end
-
-    def set_migrated
-      @migrated = true
-    end
-  end
-
-  def reset_database
-    unless self.class.migrated?
-      ActiveRecord::Schema.define(:version => 1) do
-        CreateTimeClockTable.up
-      end
-      self.class.set_migrated
-    end
-  end
+class TimeClock < ActiveRecord::Base
+  validates_presence_of :description, :ip, :tcp_port, :number
 end
