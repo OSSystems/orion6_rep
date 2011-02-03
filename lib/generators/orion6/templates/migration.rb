@@ -4,6 +4,7 @@ class CreateTimeClockTable < ActiveRecord::Migration
       t.string   :description
       t.string   :ip
       t.integer  :tcp_port
+      t.integer  :number
       t.timestamps
     end
   end

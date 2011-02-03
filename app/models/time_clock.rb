@@ -21,4 +21,6 @@ require 'orion6_plugin/orion6'
 
 class TimeClock < ActiveRecord::Base
   validates_presence_of :description, :ip, :tcp_port, :number
+
+  include Orion6Plugin::Orion6
 end
