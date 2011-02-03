@@ -1,4 +1,5 @@
 require 'socket'
+require 'timeout'
 
 module Orion6Plugin
   module Orion6
@@ -10,15 +11,15 @@ module Orion6Plugin
     SET_TIME_FIELD_QUANTITY = 1
     GET_TIME_FIELD_QUANTITY = 0
 
+    include Timeout
+
     class << self
       def get_time(equipment_number, host_address, port)
         # first set the header:
         payload = generate_header(equipment_number, false)
 
         # now send it!
-        socket = open_socket(host_address, port)
-        response = send_data(socket, payload)
-        close_socket(socket)
+        response = communicate(host_address, port, payload)
 
         # check everything:
         check_response_header(response)
@@ -42,9 +43,7 @@ module Orion6Plugin
         payload += generate_set_data(time,start_dst,end_dst)
 
         # now send it!
-        socket = open_socket(host_address, port)
-        puts send_data(socket, payload).inspect
-        close_socket(socket)
+        puts communicate(host_address, port, payload).inspect
       end
 
       private
@@ -56,6 +55,32 @@ module Orion6Plugin
       def check_response_payload(response)
         # FIXME: add a real check here
         true
+      end
+
+      def communicate(host_address, port, payload, timeout_time = 3, max_attempts = 3)
+        status, received_data = nil
+        attempt = 0
+        while attempt < max_attempts do
+          socket = TCPSocket.open(host_address, port)
+          begin
+            timeout(timeout_time) {
+              received_data = send_receive_data(socket, payload)
+            }
+          rescue Timeout::Error => e
+            # Timeout
+          end
+          socket.close
+          break if status
+          attempt += 1
+        end
+        received_data
+      end
+
+      def send_receive_data(socket, data)
+        socket.write(data.pack("C*"))
+        socket.flush
+        sleep 0.2
+        socket.recvfrom( 10000 ).first.unpack("C*")
       end
 
       def get_response_payload(response)
@@ -120,26 +145,20 @@ module Orion6Plugin
         value
       end
 
-      def open_socket(host_address, port)
-        TCPSocket.open(host_address, port)
-      end
-
-      def send_data(socket, data)
-        socket.write(data.pack("C*"))
-        socket.flush
-        sleep 0.2
-        socket.recvfrom( 10000 ).first.unpack("C*")
-      end
-
-      def close_socket(socket)
-        socket.close
-      end
-
       def get_time_from_response(raw_data)
         # the time comes in a array of unsigned integers, using the following
-        # format:
+        # format. The purpose of the last byte is unknown, but it is probably
+        # some form of data check.
+        #
+        # Example:
+        # |   current time   | DST Start |  DST End  |Unknown|
         # [yy, mm, dd, hh, mm, yy, mm, dd, yy, mm, dd, ??]
-        # [11,  1, 21, 15, 17, 11,  3, 20, 11,  3, 20,  1]
+        # [11,  1, 21, 15, 17, 10, 10, 17, 11,  2, 20,  1]
+        #
+        # These would be:
+        # - Current Time: 21/01/2011 15:17
+        # - DST Start:    17/10/2010
+        # - DST Start:    20/02/2011
 
         time = parse_time(raw_data[0..4])
         isDstOn = raw_data[5] > 0;
