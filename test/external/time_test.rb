@@ -35,29 +35,29 @@ class TimeTest < ActiveSupport::TestCase
     original_time = original_time_array[0]
     difference = (Time.now - original_time).seconds
     puts "Received: "
-    puts "Time: " + original_time_array[0].to_s
-    puts "DST Start Time: " + original_time_array[1].to_s
-    puts "DST End Time: " + original_time_array[2].to_s
+    puts "  Time:      " + original_time_array[0].to_s
+    puts "  DST Start: " + original_time_array[1].to_s
+    puts "  DST End:   " + original_time_array[2].to_s
 
     puts "\nSetting time to tomorrow..."
     new_time = original_time_array[0] + 1.day
     t.set_time(new_time).to_s
     new_array = t.get_time
     puts "Received: "
-    puts "Time: " + new_array[0].to_s
-    puts "DST Start Time: " + new_array[1].to_s
-    puts "DST End Time: " + new_array[2].to_s
+    puts "  Time:      " + new_array[0].to_s
+    puts "  DST Start: " + new_array[1].to_s
+    puts "  DST End:   " + new_array[2].to_s
 
-    puts "\nSetting time to tomorrow and with DST..."
+    puts "\nSetting time to tomorrow and with DST starting one month earlier and ending one month after..."
     new_time = original_time_array[0] + 1.day
     dst_start = original_time_array[0] - 1.month
     dst_end = original_time_array[0] + 1.month
     t.set_time(new_time, dst_start, dst_end).to_s
     new_array = t.get_time
     puts "Received: "
-    puts "Time: " + new_array[0].to_s
-    puts "DST Start Time: " + new_array[1].to_s
-    puts "DST End Time: " + new_array[2].to_s
+    puts "  Time:      " + new_array[0].to_s
+    puts "  DST Start: " + new_array[1].to_s
+    puts "  DST End:   " + new_array[2].to_s
 
     puts "\nRestoring time..."
     new_time = Time.now
