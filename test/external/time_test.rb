@@ -60,7 +60,7 @@ class TimeTest < ActiveSupport::TestCase
     puts "DST End Time: " + new_array[2].to_s
 
     puts "\nRestoring time..."
-    new_time = Time.now - difference
+    new_time = Time.now
     dst_start = original_time_array[1]
     dst_end = original_time_array[2]
     puts "Received: " + t.set_time(new_time, dst_start, dst_end).to_s
