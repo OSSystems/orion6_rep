@@ -52,6 +52,13 @@ namespace :test do
     t.libs << "test"
     t.pattern = 'test/integration/**/*_test.rb'
   end
+
+  desc "This task runs tests with a real Orion6 Time Clock, checking things like setting/getting data, retrieving reports etc. Use IP=xxx.xxx.xxx.xxx to specify the clock to be used in th test. Be careful with this option, it may cause data loss in the clock."
+  Rake::TestTask.new(:external) do |t|
+    t.libs << "test"
+    t.pattern = 'test/external/**/*_test.rb'
+  end
+  Rake::Task["external"].comment = "Test communication with a real Orion6 Time Clock - MAY CAUSE DATA LOSS! - Use 'IP=xxx.xxx.xxx.xxx' to specify the clock to be used in th test."
 end
 
 begin
