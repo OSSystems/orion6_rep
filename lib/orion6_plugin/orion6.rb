@@ -17,19 +17,16 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-require 'socket'
-require 'timeout'
+require "orion6_plugin/communication"
 
 module Orion6Plugin
   module Orion6
-    include Timeout
-
     def get_time
       # first set the header:
       payload = generate_header(self.number, false)
 
       # now send it!
-      response = communicate(self.ip, self.tcp_port, payload)
+      response = Communication.communicate(self.ip, self.tcp_port, payload)
 
       # check everything:
       check_response_header(response)
@@ -53,7 +50,8 @@ module Orion6Plugin
       payload += generate_set_data(time, start_dst, end_dst)
 
       # now send it!
-      communicate(self.ip, self.tcp_port, payload)
+      Communication.communicate(self.ip, self.tcp_port, payload)
+
       return true
     end
 
@@ -75,32 +73,6 @@ module Orion6Plugin
     def check_response_payload(response)
       # FIXME: add a real check here
       true
-    end
-
-    def communicate(host_address, port, payload, timeout_time = 3, max_attempts = 3)
-      status, received_data = nil
-      attempt = 0
-      while attempt < max_attempts do
-        socket = TCPSocket.open(host_address, port)
-        begin
-          timeout(timeout_time) {
-            received_data = send_receive_data(socket, payload)
-          }
-        rescue Timeout::Error => e
-          # Timeout
-        end
-        socket.close
-        break if status
-        attempt += 1
-      end
-      received_data
-    end
-
-    def send_receive_data(socket, data)
-      socket.write(data.pack("C*"))
-      socket.flush
-      sleep 0.2
-      socket.recvfrom( 10000 ).first.unpack("C*")
     end
 
     def get_response_payload(response)
