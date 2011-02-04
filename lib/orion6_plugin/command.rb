@@ -29,7 +29,7 @@ module Orion6Plugin
       command_data += generate_command_data
 
       # now send it!
-      response = Communication.communicate(get_host_address, get_tcp_port, payload)
+      response = Communication.communicate(get_host_address, get_tcp_port, command_data)
 
       # check everything:
       check_response_header(response)
