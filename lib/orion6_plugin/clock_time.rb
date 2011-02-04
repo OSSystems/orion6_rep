@@ -17,21 +17,15 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-require "orion6_plugin/clock_time/get"
-require "orion6_plugin/clock_time/set"
+require "orion6_plugin/command"
 
 module Orion6Plugin
-  module Orion6
-    def get_time
-      command = Orion6Plugin::ClockTime::Get.new(self.number, self.ip, self.tcp_port)
-      response = command.execute
-      return response
-    end
+  class ClockTime < Command
+    private
+    TIME_FIELD_SIZE  = 11
 
-    def set_time(time, start_dst = nil, end_dst = nil)
-      command = Orion6Plugin::ClockTime::Set.new(time, start_dst, end_dst, self.number, self.ip, self.tcp_port)
-      response = command.execute
-      return response
+    def get_field_size
+      TIME_FIELD_SIZE
     end
   end
 end
