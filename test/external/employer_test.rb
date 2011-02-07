@@ -17,28 +17,21 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-require "orion6_plugin/clock_time/get"
-require "orion6_plugin/clock_time/set"
-require "orion6_plugin/employer_get"
+require File.dirname(__FILE__) + '/../test_helper'
+require 'app/models/time_clock'
 
-module Orion6Plugin
-  module Orion6
-    def get_time
-      command = Orion6Plugin::ClockTime::Get.new(self.number, self.ip, self.tcp_port)
-      response = command.execute
-      return response
-    end
+class EmployerTest < ActiveSupport::TestCase
+  def setup
+    reset_database
+  end
 
-    def set_time(time, start_dst = nil, end_dst = nil)
-      command = Orion6Plugin::ClockTime::Set.new(time, start_dst, end_dst, self.number, self.ip, self.tcp_port)
-      response = command.execute
-      return response
-    end
+  test "get employer" do
+    ip = ENV["IP"]
+    t = TimeClock.create(:description => "Clock 1", :ip => ip, :tcp_port => 3000, :number => 1)
+    assert t.valid?
 
-    def get_employer
-      command = Orion6Plugin::EmployerGet.new(self.number, self.ip, self.tcp_port)
-      response = command.execute
-      return response
-    end
+    puts "Retrieving employer from '#{ip}'..."
+    payload = t.get_employer
+    puts "Received: " + payload.inspect
   end
 end
