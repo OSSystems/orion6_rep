@@ -20,6 +20,7 @@
 require "orion6_plugin/clock_time/get"
 require "orion6_plugin/clock_time/set"
 require "orion6_plugin/employer_get"
+require "orion6_plugin/employer_set"
 
 module Orion6Plugin
   module Orion6
@@ -37,6 +38,12 @@ module Orion6Plugin
 
     def get_employer
       command = Orion6Plugin::EmployerGet.new(self.number, self.ip, self.tcp_port)
+      response = command.execute
+      return response
+    end
+
+    def set_employer(employer_name, employer_location, document_type, document_number, cei_number)
+      command = Orion6Plugin::EmployerSet.new(employer_name, employer_location, document_type, document_number, cei_number, self.number, self.ip, self.tcp_port)
       response = command.execute
       return response
     end

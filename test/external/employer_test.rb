@@ -34,4 +34,31 @@ class EmployerTest < ActiveSupport::TestCase
     payload = t.get_employer
     puts "Received: " + payload.inspect
   end
+
+  test "set employer" do
+    ip = ENV["IP"]
+    t = TimeClock.create(:description => "Clock 1", :ip => ip, :tcp_port => 3000, :number => 1)
+    assert t.valid?
+
+    print "Retrieve the original employer on '#{ip}'... "
+    original_employer = t.get_employer
+    puts "OK!"
+
+    print "Set a new employer... "
+    t.set_employer("RAZAO_SOCIAL_TEST", "LOCATION_TEST", :cnpj, "12345", "54321")
+    print "OK!\nReceive the new employer data to check... "
+    new_employer = t.get_employer
+
+    print "OK!\nSet a different employer... "
+    t.set_employer("RAZAO_SOCIAL", "LOCATION", :cnpj, "67890", "09876")
+    print "OK!\nReceive the different employer data to check... "
+    different_employer = t.get_employer
+    assert_not_equal new_employer, different_employer
+
+    print "OK!\nRestore the original employer... "
+    t.set_employer(original_employer[:company_name], original_employer[:company_location], original_employer[:document_type], original_employer[:document_number], original_employer[:cei_document])
+    print "OK!\nReceive the employer data to check if it is the original... "
+    assert_equal original_employer, t.get_employer
+    puts "OK!"
+  end
 end
