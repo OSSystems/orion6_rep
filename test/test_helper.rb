@@ -18,6 +18,10 @@
 # e-mail: contato@ossystems.com.br
 
 ENV["RAILS_ENV"] = "test"
+
+# Show backtrace for the gem:
+ENV['BACKTRACE'] = "true"
+
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'rails/test_help'
 
