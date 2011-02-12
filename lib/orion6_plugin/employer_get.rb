@@ -20,7 +20,7 @@
 require "orion6_plugin/multi_message_command"
 
 module Orion6Plugin
-  class EmployerGet < Command
+  class EmployerGet < MultiMessageCommand
     def initialize(equipment_number, host_address, tcp_port = 3000)
       @equipment_number = equipment_number
       @host_address = host_address
