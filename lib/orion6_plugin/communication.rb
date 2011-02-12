@@ -25,31 +25,38 @@ module Orion6Plugin
     include Timeout
 
     class << self
-      def communicate(host_address, port, payload, timeout_time = 3, max_attempts = 3)
-        status, received_data = nil
+      def communicate(host_address, port, payload, timeout_time = 3, max_attempts = 3, sleep_time = 0.2)
+        status = nil
         attempt = 0
+
+        (timeout_time += sleep_time) if timeout_time <= sleep_time
+
         while attempt < max_attempts do
           socket = TCPSocket.open(host_address, port)
           begin
+            received_data = nil
             timeout(timeout_time) {
-              received_data = send_receive_data(socket, payload)
+              received_data = send_receive_data(socket, payload, sleep_time)
             }
+            status = true
           rescue Timeout::Error => e
-            # Timeout
+            received_data = nil
           end
           socket.close
           break if status
           attempt += 1
         end
+
+        raise "Timeout error" if attempt >= max_attempts
         received_data
       end
 
       private
-      def send_receive_data(socket, data)
+      def send_receive_data(socket, data, sleep_time)
         socket.write(data.pack("C*"))
         socket.flush
-        sleep 0.2
-        socket.recvfrom( 10000 ).first.unpack("C*")
+        sleep sleep_time
+        socket.recvfrom( 100000 ).first.unpack("C*")
       end
     end
   end

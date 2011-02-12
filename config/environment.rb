@@ -18,4 +18,3 @@
 # e-mail: contato@ossystems.com.br
 
 require File.expand_path('../application', __FILE__)
-Orion6Plugin::Engine.initialize!

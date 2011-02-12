@@ -20,7 +20,7 @@
 require "orion6_plugin/multi_message_command"
 
 module Orion6Plugin
-  class EmployerGet < Command
+  class EmployeeQuantityGet < Command
     def initialize(equipment_number, host_address, tcp_port = 3000)
       @equipment_number = equipment_number
       @host_address = host_address
@@ -28,57 +28,52 @@ module Orion6Plugin
     end
 
     private
-    GET_EMPLOYER_COMMAND = 128
-    EMPLOYER_FIELD_SIZE  = 255
-    EMPLOYER_FIELD_QUANTITY = 263
-
-    DOCUMENT_NUMBER_RANGE = 1..14
-    CEI_NUMBER_RANGE = 15..26
-    COMPANY_NAME_RANGE = 27..176
-    COMPANY_LOCAL_RANGE = 177..261
+    GET_EMPLOYEE_QUANTITY_COMMAND = 0x86
+    UNKNOWN_CONSTANT = 0x72
+    EMPLOYEE_FIELD_SIZE  = 0x1
+    EMPLOYEE_FIELD_QUANTITY = 0x6
+    RETURNED_RECORD_SIZE = 87
 
     def get_command
-      @command ||= GET_EMPLOYER_COMMAND
+      GET_EMPLOYEE_QUANTITY_COMMAND
+    end
+
+    def get_unknown_constant
+      UNKNOWN_CONSTANT
     end
 
     def get_field_size
-      EMPLOYER_FIELD_SIZE
+      EMPLOYEE_FIELD_SIZE
     end
 
     def get_field_quantity
-      EMPLOYER_FIELD_QUANTITY
+      EMPLOYEE_FIELD_QUANTITY
+    end
+
+    def get_sleep_time
+      1
     end
 
     def generate_command_data
-      []
+      # this data is probably imutable:
+      data = [0x02, 0x00, 0x01, 0x97, 0x97, 0x03]
+      #      [   2,    0,    1,  151,  151,    3]
+      data << xor(data)
+      data
     end
 
-    # Here is how the data comes from the REP:
-    # 0 - Document type:
-    #   49 ('1'): CNPJ
-    #   50 ('2'): CPF
-    # 1-14 - Document number (in hexadecimal long)
-    # 15-26 - CEI Document (in hexadecimal long)
-    # 27-176 - Company name
-    # 177-261 - Company location
     def get_data_from_response(payload)
-      hash = {}
+      # First byte is aways 2... I don't known why...
+      # The next two bytes are probably the record quantity, in big-endian.
+      record_quantity = (payload[1]*256 + payload[2])
 
-      # get document type:
-      case payload[0]
-      when 49
-        hash[:document_type] = :cnpj
-      when 50
-        hash[:document_type] = :cpf
-      else
-        raise "Unknown document type received: #{payload[0]}"
-      end
+      # The next three bytes appear to be the employee quantity, in big-endian:
+      raw_data = payload[3..(3+record_quantity)]
+      employee_quantity = (raw_data[0] << 16)+(raw_data[1] << 8)+ raw_data[2]
 
-      hash[:document_number] = payload[DOCUMENT_NUMBER_RANGE].pack("C*")
-      hash[:cei_document] = payload[CEI_NUMBER_RANGE].pack("C*")
-      hash[:company_name] = payload[COMPANY_NAME_RANGE].pack("C*").strip
-      hash[:company_location] = payload[COMPANY_LOCAL_RANGE].pack("C*").strip
-      hash
+      # The last three bytes appear to be a CRC XOR for the data, a useless 3
+      # and the XOR CRC for the whole payload
+      employee_quantity
     end
   end
 end

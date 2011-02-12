@@ -18,8 +18,7 @@
 # e-mail: contato@ossystems.com.br
 
 ENV["RAILS_ENV"] = "test"
-require File.expand_path('../../config/application', __FILE__)
-
+require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'rails/test_help'
 
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
@@ -28,7 +27,7 @@ ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":me
 
 require File.expand_path('../../lib/generators/orion6/templates/migration.rb', __FILE__)
 
-class Test::Unit::TestCase
+class ActiveSupport::TestCase
   class << self
     def migrated?
       @migrated ||= false
