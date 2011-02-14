@@ -25,25 +25,19 @@ module Orion6Plugin
     include Timeout
 
     class << self
-      def communicate(host_address, port, payload, timeout_time = 3, max_attempts = 3, sleep_time = 0.2)
-        status = nil
+      def communicate(host_address, port, payload, expected_response_size, timeout_time = 3, max_attempts = 3)
         attempt = 0
-
-        (timeout_time += sleep_time) if timeout_time <= sleep_time
 
         while attempt < max_attempts do
           socket = TCPSocket.open(host_address, port)
           begin
             received_data = nil
-            timeout(timeout_time) {
-              received_data = send_receive_data(socket, payload, sleep_time)
-            }
-            status = true
+            received_data = send_receive_data(socket, payload, expected_response_size, timeout_time)
           rescue Timeout::Error => e
             received_data = nil
           end
           socket.close
-          break if status
+          break unless received_data.nil?
           attempt += 1
         end
 
@@ -52,11 +46,18 @@ module Orion6Plugin
       end
 
       private
-      def send_receive_data(socket, data, sleep_time)
-        socket.write(data.pack("C*"))
+      def send_receive_data(socket, data_to_send, expected_response_size, timeout_time)
+        socket.write(data_to_send.pack("C*"))
         socket.flush
-        sleep sleep_time
-        socket.recvfrom( 100000 ).first.unpack("C*")
+        data_to_receive = []
+        while data_to_receive.size < expected_response_size
+          bytes_to_be_read = expected_response_size - data_to_receive.size
+          bytes_to_be_read = 100 if bytes_to_be_read > 100
+          timeout(timeout_time) {
+            data_to_receive += socket.read( bytes_to_be_read ).unpack("C*")
+          }
+        end
+        data_to_receive
       end
     end
   end

@@ -33,6 +33,7 @@ module Orion6Plugin
       @equipment_number = equipment_number
       @host_address = host_address
       @tcp_port = tcp_port
+      @reponse_size = 0
     end
 
     private

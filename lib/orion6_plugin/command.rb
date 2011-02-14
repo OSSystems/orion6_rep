@@ -29,7 +29,7 @@ module Orion6Plugin
       command_data += generate_command_data
 
       # now send it!
-      response = Communication.communicate(get_host_address, get_tcp_port, command_data, get_timeout_time, get_max_attempts, get_sleep_time)
+      response = Communication.communicate(get_host_address, get_tcp_port, command_data, get_expected_response_size, get_timeout_time, get_max_attempts)
 
       # check everything:
       check_response_header(response)
@@ -44,6 +44,9 @@ module Orion6Plugin
     # TODO: find what is this constant. It's the size of something, perhaps?
     UNKNOWN_CONSTANT = 113
 
+    HEADER_SIZE = 8
+    @reponse_size = 0
+
     def get_timeout_time
       3
     end
@@ -52,8 +55,8 @@ module Orion6Plugin
       3
     end
 
-    def get_sleep_time
-      0.2
+    def get_expected_response_size
+      HEADER_SIZE + @reponse_size
     end
 
     def get_unknown_constant

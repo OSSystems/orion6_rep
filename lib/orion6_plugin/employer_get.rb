@@ -53,6 +53,10 @@ module Orion6Plugin
       []
     end
 
+    def get_expected_response_size
+      first_message_sent? ? 17 : 264
+    end
+
     # Here is how the data comes from the REP:
     # 0 - Document type:
     #   49 ('1'): CNPJ

@@ -25,6 +25,7 @@ module Orion6Plugin
       @equipment_number = equipment_number
       @host_address = host_address
       @tcp_port = tcp_port
+      @reponse_size = 12
     end
 
     private
@@ -49,9 +50,9 @@ module Orion6Plugin
       # some form of data check.
       #
       # Example:
-      # |   current time   | DST Start |  DST End  |Unknown|
-      # [yy, mm, dd, hh, mm, yy, mm, dd, yy, mm, dd, ??]
-      # [11,  1, 21, 15, 17, 10, 10, 17, 11,  2, 20,  1]
+      # |   current time   | DST Start |  DST End  |CRC(XOR)|
+      # [yy, mm, dd, hh, mm, yy, mm, dd, yy, mm, dd, xor]
+      # [11,  1, 21, 15, 17, 10, 10, 17, 11,  2, 20,   1]
       #
       # These would be:
       # - Current Time: 21/01/2011 15:17

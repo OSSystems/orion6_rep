@@ -27,8 +27,6 @@ require 'rails/test_help'
 
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 
-ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
-
 require File.expand_path('../../lib/generators/orion6/templates/migration.rb', __FILE__)
 
 class ActiveSupport::TestCase
@@ -44,10 +42,12 @@ class ActiveSupport::TestCase
 
   def reset_database
     unless self.class.migrated?
+      ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
       ActiveRecord::Schema.define(:version => 1) do
         CreateTimeClockTable.up
       end
       self.class.set_migrated
     end
+    true
   end
 end

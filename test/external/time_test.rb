@@ -28,7 +28,7 @@ class TimeTest < ActiveSupport::TestCase
   test "get time" do
     ip = ENV["IP"]
     t = TimeClock.create(:description => "Clock 1", :ip => ip, :tcp_port => 3000, :number => 1)
-    assert t.valid?
+    assert t.valid?, t.errors.full_messages.join(", ")
 
     puts "Retrieving time from '#{ip}'..."
     original_time_array = t.get_time

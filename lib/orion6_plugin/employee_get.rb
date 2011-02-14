@@ -26,6 +26,7 @@ module Orion6Plugin
       @equipment_number = equipment_number
       @host_address = host_address
       @tcp_port = tcp_port
+      @reponse_size = (employees_number*RETURNED_RECORD_SIZE)+4+3
     end
 
     private
@@ -50,10 +51,6 @@ module Orion6Plugin
 
     def get_field_quantity
       EMPLOYEE_FIELD_QUANTITY
-    end
-
-    def get_sleep_time
-      10
     end
 
     def generate_command_data

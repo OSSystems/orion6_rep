@@ -26,6 +26,7 @@ module Orion6Plugin
 
       payload = []
 
+      @messages_sent = 0
       messages_quantity.times do
         command_data = generate_partial_message_header
         payload += get_and_process_message(command_data)
@@ -34,6 +35,7 @@ module Orion6Plugin
         # command must increased by the size of the received payload.
         # Go figure...
         @command += payload.size
+        @messages_sent += 1
       end
 
       if message_remainder > 0
@@ -113,9 +115,13 @@ module Orion6Plugin
       raise "This method should be overriden by the subclass"
     end
 
+    def first_message_sent?
+      @messages_sent && @messages_sent > 0
+    end
+
     def get_and_process_message(command_data)
       # now send it!
-      response = Communication.communicate(get_host_address, get_tcp_port, command_data)
+      response = Communication.communicate(get_host_address, get_tcp_port, command_data, get_expected_response_size, get_timeout_time, get_max_attempts)
 
       # check everything:
       check_response_header(response)

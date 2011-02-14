@@ -37,6 +37,8 @@ end
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
+require "lib/orion6_plugin"
+
 module Orion6Plugin
   class Engine < Rails::Engine
     config.encoding = "utf-8"
