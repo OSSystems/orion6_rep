@@ -32,11 +32,6 @@ module Orion6Plugin
     EMPLOYER_FIELD_SIZE  = 255
     EMPLOYER_FIELD_QUANTITY = 263
 
-    DOCUMENT_NUMBER_RANGE = 1..14
-    CEI_NUMBER_RANGE = 15..26
-    COMPANY_NAME_RANGE = 27..176
-    COMPANY_LOCAL_RANGE = 177..261
-
     def get_command
       @command ||= GET_EMPLOYER_COMMAND
     end
@@ -68,20 +63,21 @@ module Orion6Plugin
     def get_data_from_response(payload)
       hash = {}
 
-      # get document type:
-      case payload[0]
+      doc_type_code, document_number, cei_document, company_name, company_location = payload.unpack("CA14A12A150A84")
+
+      case doc_type_code
       when 49
         hash[:document_type] = :cnpj
       when 50
         hash[:document_type] = :cpf
       else
-        raise "Unknown document type received: #{payload[0]}"
+        raise "Unknown document type received: #{doc_type_code}"
       end
 
-      hash[:document_number] = payload[DOCUMENT_NUMBER_RANGE].pack("C*")
-      hash[:cei_document] = payload[CEI_NUMBER_RANGE].pack("C*")
-      hash[:company_name] = payload[COMPANY_NAME_RANGE].pack("C*").strip
-      hash[:company_location] = payload[COMPANY_LOCAL_RANGE].pack("C*").strip
+      hash[:document_number] = document_number
+      hash[:cei_document] = cei_document
+      hash[:company_name] = company_name.strip
+      hash[:company_location] = company_location.strip
       hash
     end
   end

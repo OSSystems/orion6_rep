@@ -91,10 +91,11 @@ module Orion6Plugin
       # the last three bytes appear to be the end data marker, a useless 3 and
       # the XOR CRC:
       data = []
-      raw_data.each_slice(RETURNED_RECORD_SIZE) do |slice|
+
+      raw_data.split(/.{#{RETURNED_RECORD_SIZE}}/).each do |slice|
         # the fields are separated by a comma, and the registration comes with a
         # extra number at the end, so drop them:
-        registration, name, pis_number = slice.pack("C*").unpack("A20x2A52xA12")
+        registration, name, pis_number = slice.unpack("A20x2A52xA12")
         data << {:name => name.to_s.strip, :registration => registration, :pis_number => pis_number}
       end
       data

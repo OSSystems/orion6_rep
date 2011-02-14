@@ -49,12 +49,12 @@ module Orion6Plugin
       def send_receive_data(socket, data_to_send, expected_response_size, timeout_time)
         socket.write(data_to_send.pack("C*"))
         socket.flush
-        data_to_receive = []
+        data_to_receive = ""
         while data_to_receive.size < expected_response_size
           bytes_to_be_read = expected_response_size - data_to_receive.size
           bytes_to_be_read = 100 if bytes_to_be_read > 100
           timeout(timeout_time) {
-            data_to_receive += socket.read( bytes_to_be_read ).unpack("C*")
+            data_to_receive += socket.read( bytes_to_be_read )
           }
         end
         data_to_receive

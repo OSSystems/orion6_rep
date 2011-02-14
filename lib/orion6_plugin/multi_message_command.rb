@@ -24,7 +24,7 @@ module Orion6Plugin
       messages_quantity = get_field_quantity / get_field_size
       message_remainder = get_field_quantity % get_field_size
 
-      payload = []
+      payload = ""
 
       @messages_sent = 0
       messages_quantity.times do

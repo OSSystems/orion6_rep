@@ -59,12 +59,17 @@ module Orion6Plugin
       # - DST Start:    17/10/2010
       # - DST Start:    20/02/2011
 
-      time = parse_time(payload[0..4])
-      isDstOn = payload[5] > 0;
+      time_payload = payload.unpack("C5")
+      dst_start_payload = payload[5..-1].unpack("C3")
+      dst_end_payload = payload[8..-1].unpack("C3")
+
+      time = parse_time(time_payload)
+
+      isDstOn = dst_start_payload.any?{|d| d > 0}
 
       if isDstOn
-        start_dst = parse_date(payload[5..7])
-        end_dst   = parse_date(payload[8..10])
+        start_dst = parse_date(dst_start_payload)
+        end_dst   = parse_date(dst_end_payload)
       end
       [time, start_dst, end_dst]
     end
