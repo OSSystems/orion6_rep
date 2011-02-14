@@ -77,7 +77,7 @@ module Orion6Plugin
       data += @cei_number.rjust(12, "0").unpack("C*")
       data += @employer_name.ljust(150, 0.chr).unpack("C*")
       data += @employer_location.ljust(85, 0.chr).unpack("C*")
-      data << xor(data)
+      data << crc_check(data)
 
       data
     end

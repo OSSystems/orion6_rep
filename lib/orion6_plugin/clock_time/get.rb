@@ -50,9 +50,9 @@ module Orion6Plugin
       # some form of data check.
       #
       # Example:
-      # |   current time   | DST Start |  DST End  |CRC(XOR)|
-      # [yy, mm, dd, hh, mm, yy, mm, dd, yy, mm, dd, xor]
-      # [11,  1, 21, 15, 17, 10, 10, 17, 11,  2, 20,   1]
+      # |   current time   | DST Start |  DST End  |
+      # [yy, mm, dd, hh, mm, yy, mm, dd, yy, mm, dd]
+      # [11,  1, 21, 15, 17, 10, 10, 17, 11,  2, 20]
       #
       # These would be:
       # - Current Time: 21/01/2011 15:17

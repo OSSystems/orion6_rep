@@ -59,7 +59,7 @@ module Orion6Plugin
       # this data is probably imutable:
       data = [0x02, 0x00, 0x01, 0x97, 0x97, 0x03]
       #      [   2,    0,    1,  151,  151,    3]
-      data << xor(data)
+      data << crc_check(data)
       data
     end
 

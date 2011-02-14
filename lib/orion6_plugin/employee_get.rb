@@ -54,20 +54,16 @@ module Orion6Plugin
     end
 
     def generate_command_data
-      def crc_number(data)
-        xor(data[3..6])
-      end
-
-      def crc_all(data)
-        xor(data)
+      def internal_crc_check(data)
+        crc_check(data[3..6])
       end
 
       # this data can change:
       data = [0x02, 0x00, 0x04, 0x98, 0x00, 0x01]
       data << @employees_number
-      data << crc_number(data)
+      data << internal_crc_check(data)
       data << 0x03
-      data << crc_all(data)
+      data << crc_check(data)
     end
 
     def crc_size
@@ -83,13 +79,12 @@ module Orion6Plugin
       start_offset = 4
 
       # the end of the data is the size plus the start minus two, since the REP
-      # send the CRC at the end of the data and array starts at zero:
+      # send the CRC at the end of the data and array starts at zero. The last
+      # two bytes appear to be the end data marker and a useless 3.
       end_offset = record_quantity + start_offset - crc_size - 1
 
       raw_data = payload[start_offset..end_offset]
 
-      # the last three bytes appear to be the end data marker, a useless 3 and
-      # the XOR CRC:
       data = []
 
       raw_data.split(/.{#{RETURNED_RECORD_SIZE}}/).each do |slice|

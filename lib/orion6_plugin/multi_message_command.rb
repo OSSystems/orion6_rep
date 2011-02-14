@@ -65,12 +65,6 @@ module Orion6Plugin
       @tcp_port
     end
 
-    def get_response_payload(response)
-      # TODO: other payloads might be different.
-      # Last byte is the XOR check, so is not needed.
-      response[8..-2]
-    end
-
     def generate_partial_message_header
       header = [get_equipment_number^255] # TODO: find why this is needed
       header << MULTI_MESSAGE_COMMAND
@@ -79,7 +73,7 @@ module Orion6Plugin
       header << get_field_size
       header << (get_command & 255) # first byte of command
       header << divide_by_256(get_command)  # second byte of command
-      header << xor(header) # TODO: find why this is needed; maybe a data check?
+      header << crc_check(header)
       header
     end
 
@@ -91,7 +85,7 @@ module Orion6Plugin
       header << 1 # TODO: find why this is needed
       header << (get_command & 255)
       header << divide_by_256(get_command)
-      header << xor(header) # TODO: find why this is needed; maybe a data check?
+      header << crc_check(header)
       header
     end
 

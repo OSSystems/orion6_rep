@@ -76,18 +76,16 @@ module Orion6Plugin
     end
 
     def check_response_header(response)
-      # FIXME: add a real check here
-      true
+      crc_check(response[0..6]) == response[7]
     end
 
     def check_response_payload(response)
-      # FIXME: add a real check here
-      true
+      crc_check(response[8..-2]) == response[-1]
     end
 
     def get_response_payload(response)
       # TODO: other payloads might be different
-      response[8..-1]
+      response[8..-2]
     end
 
     def generate_header
@@ -100,7 +98,7 @@ module Orion6Plugin
       header << get_field_size
       header << field_quantity
       header << divide_by_256(field_quantity)
-      header << xor(header) # TODO: find why this is needed; maybe a data check?
+      header << crc_check(header) # TODO: find why this is needed; maybe a data check?
       header
     end
 
@@ -124,8 +122,13 @@ module Orion6Plugin
       raise "This method should be overriden by the subclass"
     end
 
+    def crc_check(data)
+      xor(data)
+    end
+
     def xor(data)
       value = 0;
+      data = data.unpack("C*") if data.is_a?(String)
       data.each do |integer|
         value ^= integer
       end

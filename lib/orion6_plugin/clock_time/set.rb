@@ -71,10 +71,7 @@ module Orion6Plugin
       else
         data += [0, 0, 0, 0, 0, 0] # if no DST is specified just send zeros
       end
-
-      # TODO: find why this is needed; maybe a data check?
-      data << xor(data)
-
+      data << crc_check(data)
       data
     end
 
