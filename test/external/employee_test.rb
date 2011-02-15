@@ -48,4 +48,61 @@ class EmployeeTest < ActiveSupport::TestCase
       assert_equal(12, employee_data[:pis_number].size)
     end
   end
+
+  test "set employee" do
+    test_values = {:registration => "12345678901234567890",
+      :name => "Test User",
+      :pis_number => "123456789012"}
+
+    ip = ENV["IP"]
+    t = TimeClock.create(:description => "Clock 1", :ip => ip, :tcp_port => 3000, :number => 1)
+    assert t.valid?
+
+    print "Retrieving employees from '#{ip}'... "
+    all_employees = t.get_employees
+    puts "OK!"
+
+    test_user = all_employees.detect do |e|
+      test_values.any?{|key, value| e[key] == value}
+    end
+
+    if test_user
+      print "Test user already exists, removing it for testing... "
+      assert t.set_employee(:remove, test_user[:registration], test_user[:pis_number], test_user[:name])
+      puts "OK!"
+
+      print "Checking if user was removed... "
+      all_employees = t.get_employees
+      test_user = all_employees.detect do |e|
+        test_values.any?{|key, value| e[key] == value}
+      end
+      assert_nil test_user
+      puts "OK!"
+    end
+
+    print "Adding test user... "
+    assert t.set_employee(:add, test_values[:registration], test_values[:pis_number], test_values[:name])
+    puts "OK!"
+
+    print "Checking if user was added... "
+    all_employees = t.get_employees
+
+    test_user = all_employees.detect do |e|
+      test_values.all?{|key, value| e[key] == value}
+    end
+    assert !test_user.nil?
+    puts "OK!"
+
+    print "Removing test user... "
+    assert t.set_employee(:remove, test_user[:registration], test_user[:pis_number], test_user[:name])
+    puts "OK!"
+
+    print "Checking if user was removed... "
+    all_employees = t.get_employees
+    test_user = all_employees.detect do |e|
+      test_values.any?{|key, value| e[key] == value}
+    end
+    assert_nil test_user
+    puts "OK!"
+  end
 end

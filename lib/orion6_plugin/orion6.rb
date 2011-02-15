@@ -23,6 +23,7 @@ require "orion6_plugin/employer_get"
 require "orion6_plugin/employer_set"
 require "orion6_plugin/employee_get"
 require "orion6_plugin/employee_quantity_get"
+require "orion6_plugin/employee_set"
 
 module Orion6Plugin
   module Orion6
@@ -59,6 +60,12 @@ module Orion6Plugin
     def get_employees(quantity = nil)
       quantity = get_employees_quantity if quantity.nil?
       command = Orion6Plugin::EmployeeGet.new(quantity, self.number, self.ip, self.tcp_port)
+      response = command.execute
+      return response
+    end
+
+    def set_employee(operation_type, registration, pis_number, name)
+      command = Orion6Plugin::EmployeeSet.new(operation_type, registration, pis_number, name, self.number, self.ip, self.tcp_port)
       response = command.execute
       return response
     end

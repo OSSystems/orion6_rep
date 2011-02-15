@@ -84,16 +84,28 @@ module Orion6Plugin
       end_offset = record_quantity + start_offset - crc_size - 1
 
       raw_data = payload[start_offset..end_offset]
+      slices = slice_raw_data(raw_data)
 
       data = []
-
-      raw_data.split(/.{#{RETURNED_RECORD_SIZE}}/).each do |slice|
+      slices.each do |slice|
         # the fields are separated by a comma, and the registration comes with a
         # extra number at the end, so drop them:
         registration, name, pis_number = slice.unpack("A20x2A52xA12")
         data << {:name => name.to_s.strip, :registration => registration, :pis_number => pis_number}
       end
       data
+    end
+
+    def slice_raw_data(raw_data)
+      slices = []
+      index = 0
+      while index < raw_data.size
+        slice_start = index
+        slice_end = slice_start + RETURNED_RECORD_SIZE - 1
+        slices << raw_data[slice_start..slice_end]
+        index = slice_end + 1
+      end
+      slices
     end
   end
 end
