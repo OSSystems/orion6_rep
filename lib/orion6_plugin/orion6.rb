@@ -24,9 +24,19 @@ require "orion6_plugin/employer_set"
 require "orion6_plugin/employee_get"
 require "orion6_plugin/employee_quantity_get"
 require "orion6_plugin/employee_set"
+require "orion6_plugin/detect_reps"
 
 module Orion6Plugin
   module Orion6
+    class << self
+      def detect_reps
+        command = Orion6Plugin::DetectReps.new
+        command.execute
+        response = command.pool
+        return response
+      end
+    end
+
     def get_time
       command = Orion6Plugin::ClockTime::Get.new(self.number, self.ip, self.tcp_port)
       response = command.execute
