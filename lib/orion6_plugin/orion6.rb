@@ -25,6 +25,7 @@ require "orion6_plugin/employee_get"
 require "orion6_plugin/employee_quantity_get"
 require "orion6_plugin/employee_set"
 require "orion6_plugin/detect_reps"
+require "orion6_plugin/change_ip"
 
 module Orion6Plugin
   module Orion6
@@ -78,6 +79,33 @@ module Orion6Plugin
       command = Orion6Plugin::EmployeeSet.new(operation_type, registration, pis_number, name, self.number, self.ip, self.tcp_port)
       response = command.execute
       return response
+    end
+
+    def change_ip(new_ip, interface = nil, rep_data = nil)
+      if interface.nil? or rep_data.nil?
+        data = get_data_from_detection(self.ip)
+        interface = data.first if interface.nil?
+        rep_data = data.last if rep_data.nil?
+      end
+
+      command = Orion6Plugin::ChangeIp.new(interface, new_ip, rep_data)
+      response = command.execute
+      return new_ip if response
+    end
+
+    private
+    def get_data_from_detection(ip)
+      response_data = Orion6Plugin::Orion6.detect_reps
+      response_data.each do |collected_interface, interface_data|
+        interface_data.each do |collected_ip, data|
+          if collected_ip == self.ip
+            interface = collected_interface
+            rep_data = data[:rep_data]
+            return [interface, rep_data]
+          end
+        end
+      end
+      return []
     end
   end
 end

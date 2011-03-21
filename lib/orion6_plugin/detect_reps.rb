@@ -29,23 +29,26 @@ module Orion6Plugin
       ifaces_names = Orion6Plugin::Interface.get_active_interfaces_names
       # it's useless to try to detect REPs in the localhost
       ifaces_names.delete("lo")
-      broadcast_addresses = ifaces_names.collect do |name|
-        Orion6Plugin::Interface.broadcast_address(name)
-      end
-      raise "No active network interfaces found" if broadcast_addresses.empty?
 
+      @interfaces = {}
       @responses = {}
-      @broadcasts = {}
-      broadcast_addresses.each do |broadcast_addr|
+      ifaces_names.each do |name|
+        broadcast_address = Orion6Plugin::Interface.broadcast_address(name)
+        @interfaces[name] = {}
+        @interfaces[name][:broadcast_addr] = broadcast_address
+      end
+      raise "No active network interfaces found" if @interfaces.empty?
+
+      @interfaces.each_key do |name|
         socket = UDPSocket.new
         socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_BROADCAST, true)
-        @broadcasts[broadcast_addr] = socket
+        @interfaces[name][:socket] = socket
       end
     end
 
     def execute
-      @broadcasts.each do |broadcast_addr, socket|
-        socket.send(UDP_DETECTION_DATA, 0, broadcast_addr, UDP_DETECTION_PORT)
+      @interfaces.each do |_, data|
+        data[:socket].send(UDP_DETECTION_DATA, 0, data[:broadcast_addr], UDP_DETECTION_PORT)
       end
     end
 
@@ -55,9 +58,11 @@ module Orion6Plugin
       unless rep_responses.nil? or rep_responses.empty?
         rep_responses.first.each do |socket|
           raw_data, socket_data = socket.recvfrom(33)
-          tcp_port = raw_data.unpack("x18a4").first.to_i
+          rep_data, tcp_port = raw_data.unpack("a18a4")
           ip = socket_data.last
-          @responses[ip] = tcp_port
+          interface = get_assossiated_interface(socket)
+          @responses[interface] = {} if @responses[interface].nil?
+          @responses[interface][ip] = {:port => tcp_port.to_i, :rep_data => rep_data}
         end
       end
 
@@ -71,7 +76,11 @@ module Orion6Plugin
 
     private
     def get_sockets
-      @broadcasts.collect{|_, socket| socket}
+      @interfaces.collect{|_, data| data[:socket]}
+    end
+
+    def get_assossiated_interface(socket)
+      @interfaces.each{|interface, data| return interface if data[:socket] == socket}
     end
   end
 end
