@@ -17,15 +17,15 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-require "orion6_plugin/clock_time/get"
-require "orion6_plugin/clock_time/set"
-require "orion6_plugin/employer_get"
-require "orion6_plugin/employer_set"
-require "orion6_plugin/employee_get"
-require "orion6_plugin/employee_quantity_get"
-require "orion6_plugin/employee_set"
-require "orion6_plugin/detect_reps"
-require "orion6_plugin/change_ip"
+require "lib/orion6_plugin/clock_time/get"
+require "lib/orion6_plugin/clock_time/set"
+require "lib/orion6_plugin/employer_get"
+require "lib/orion6_plugin/employer_set"
+require "lib/orion6_plugin/employee_get"
+require "lib/orion6_plugin/employee_quantity_get"
+require "lib/orion6_plugin/employee_set"
+require "lib/orion6_plugin/detect_reps"
+require "lib/orion6_plugin/change_ip"
 
 module Orion6Plugin
   module Orion6
