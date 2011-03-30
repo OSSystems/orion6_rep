@@ -88,14 +88,26 @@ module Orion6Plugin
       response[8..-2]
     end
 
+    def convert_to_integer_as_little_endian(integer_array)
+      self.class.convert_to_integer_as_little_endian(integer_array)
+    end
+
+    def convert_to_integer_as_big_endian(integer_array)
+      self.class.convert_to_integer_as_big_endian(integer_array)
+    end
+
+    def crc_size
+      1
+    end
+
     def generate_header
       field_quantity = get_field_quantity
 
       header = [get_equipment_number^255] # TODO: find why this is needed
       header << get_command
       header << get_unknown_constant
-      header << 0 # TODO: find why this is needed
-      header << get_field_size
+      header << divide_by_256(get_field_size)
+      header << (get_field_size & 255)
       header << field_quantity
       header << divide_by_256(field_quantity)
       header << crc_check(header) # TODO: find why this is needed; maybe a data check?
@@ -123,20 +135,36 @@ module Orion6Plugin
     end
 
     def crc_check(data)
-      xor(data)
-    end
-
-    def xor(data)
-      value = 0;
-      data = data.unpack("C*") if data.is_a?(String)
-      data.each do |integer|
-        value ^= integer
-      end
-      value
+      self.class.xor(data)
     end
 
     def divide_by_256(value)
       return (value >> 8 & 255)
+    end
+
+    class << self
+      def xor(data)
+        value = 0;
+        data = data.unpack("C*") if data.is_a?(String)
+        data.each do |integer|
+          value ^= integer
+        end
+        value
+      end
+
+      def convert_to_integer_as_little_endian(integer_array)
+        value = 0
+        integer_array.each_with_index do |byte, index|
+          value += (byte.to_i << 8*index)
+        end
+        value
+      end
+
+      # This method is the same of the little-endian one above, just with the
+      # input data reversed.
+      def convert_to_integer_as_big_endian(integer_array)
+        convert_to_integer_as_little_endian(integer_array.reverse)
+      end
     end
   end
 end

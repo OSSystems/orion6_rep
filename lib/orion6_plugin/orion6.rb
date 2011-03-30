@@ -24,6 +24,10 @@ require "lib/orion6_plugin/employer_set"
 require "lib/orion6_plugin/employee_get"
 require "lib/orion6_plugin/employee_quantity_get"
 require "lib/orion6_plugin/employee_set"
+require "lib/orion6_plugin/get_serial_number"
+require "lib/orion6_plugin/record_id_get"
+require "lib/orion6_plugin/records_get"
+require "lib/orion6_plugin/afd_parser"
 require "lib/orion6_plugin/detect_reps"
 require "lib/orion6_plugin/change_ip"
 
@@ -91,6 +95,53 @@ module Orion6Plugin
       command = Orion6Plugin::ChangeIp.new(interface, new_ip, rep_data)
       response = command.execute
       return new_ip if response
+    end
+
+    def get_serial_number
+      command = Orion6Plugin::GetSerialNumber.new(self.number, self.ip, self.tcp_port)
+      response = command.execute
+      return response
+    end
+
+    def get_record_id(datetime)
+      command = Orion6Plugin::RecordIdGet.new(datetime, self.number, self.ip, self.tcp_port)
+      response = command.execute
+      return response
+    end
+
+    def get_records(first_id = nil)
+      if first_id.nil?
+        date = Time.now - 1.month
+        first_id = get_record_id(date)
+      end
+
+      id = first_id
+      parser = AfdParser.new(false)
+      records = []
+      while !id.nil?
+        command = Orion6Plugin::RecordsGet.new(id, self.number, self.ip, self.tcp_port)
+        data = command.execute
+        record = nil
+        while data.size > 0
+          record = parser.parse_line(data, id)
+          size = record.class.size
+          data.slice!(0..(size-1))
+          records << record
+          id += 1
+        end
+
+        id = record.nil? ? nil : (record.line_id + 1)
+      end
+
+      afd_start_date = parser.first_creation_date
+      afd_end_date = parser.last_creation_date
+      employer = get_employer
+      serial_number = get_serial_number
+      parser.create_header(employer[:document_type], employer[:document_number],
+                           employer[:cei_document], employer[:company_name],
+                           serial_number, afd_start_date, afd_end_date, Time.now)
+      parser.create_trailer
+      return parser
     end
 
     private

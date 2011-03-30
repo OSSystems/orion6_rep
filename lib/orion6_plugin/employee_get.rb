@@ -66,10 +66,6 @@ module Orion6Plugin
       data << crc_check(data)
     end
 
-    def crc_size
-      1
-    end
-
     def get_data_from_response(payload)
       # first byte is aways 2... I don't known why...
       # The next two bytes are probably the record quantity, in big-endian.
