@@ -27,9 +27,9 @@ require "lib/orion6_plugin/employee_set"
 require "lib/orion6_plugin/get_serial_number"
 require "lib/orion6_plugin/record_id_get"
 require "lib/orion6_plugin/records_get"
-require "lib/orion6_plugin/afd_parser"
 require "lib/orion6_plugin/detect_reps"
 require "lib/orion6_plugin/change_ip"
+require "afd_parser"
 
 module Orion6Plugin
   module Orion6

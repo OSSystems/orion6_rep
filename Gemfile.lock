@@ -28,6 +28,8 @@ GEM
       activemodel (= 3.0.3)
       activesupport (= 3.0.3)
     activesupport (3.0.3)
+    afd_parser (0.0.1)
+      rake (>= 0.8.7)
     arel (2.0.6)
     builder (2.1.2)
     columnize (0.3.2)
@@ -80,6 +82,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  afd_parser
   jeweler
   rails (= 3.0.3)
   ruby-debug
