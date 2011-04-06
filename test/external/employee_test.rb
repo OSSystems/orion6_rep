@@ -18,17 +18,11 @@
 # e-mail: contato@ossystems.com.br
 
 require File.dirname(__FILE__) + '/../test_helper'
-require 'app/models/time_clock'
 
 class EmployeeTest < ActiveSupport::TestCase
-  def setup
-    reset_database
-  end
-
   test "get employees quantity" do
     ip = ENV["IP"]
-    t = TimeClock.create(:description => "Clock 1", :ip => ip, :tcp_port => 3000, :number => 1)
-    assert t.valid?
+    t = TimeClock.new(ip, 3000, 1)
 
     puts "Retrieving employees quantity from '#{ip}'..."
     payload = t.get_employees_quantity
@@ -37,8 +31,7 @@ class EmployeeTest < ActiveSupport::TestCase
 
   test "get employees" do
     ip = ENV["IP"]
-    t = TimeClock.create(:description => "Clock 1", :ip => ip, :tcp_port => 3000, :number => 1)
-    assert t.valid?
+    t = TimeClock.new(ip, 3000, 1)
 
     puts "Retrieving employees from '#{ip}'..."
     data = t.get_employees
@@ -55,8 +48,7 @@ class EmployeeTest < ActiveSupport::TestCase
       :pis_number => "123456789012"}
 
     ip = ENV["IP"]
-    t = TimeClock.create(:description => "Clock 1", :ip => ip, :tcp_port => 3000, :number => 1)
-    assert t.valid?
+    t = TimeClock.new(ip, 3000, 1)
 
     print "Retrieving employees from '#{ip}'... "
     all_employees = t.get_employees

@@ -18,17 +18,12 @@
 # e-mail: contato@ossystems.com.br
 
 require File.dirname(__FILE__) + '/../test_helper'
-require 'app/models/time_clock'
 
 class GetSerialTest < ActiveSupport::TestCase
-  def setup
-    reset_database
-  end
-
   test "get REP serial number" do
     ip = ENV["IP"]
-    t = TimeClock.create!(:description => "Clock 1", :ip => ip, :tcp_port => 3000, :number => 1)
-    assert t.valid?
+    t = TimeClock.new(ip, 3000, 1)
+
     puts "Retrieving serial number from '#{ip}'..."
     serial = t.get_serial_number
     puts "Received: " + serial.inspect

@@ -21,10 +21,6 @@ require File.dirname(__FILE__) + '/../test_helper'
 require 'lib/orion6_plugin/orion6'
 
 class DetectRepsTest < ActiveSupport::TestCase
-  def setup
-    reset_database
-  end
-
   test "detect rep" do
     puts "Detecting REPs in the network..."
     detected_reps = Orion6Plugin::Orion6.detect_reps
