@@ -1,7 +1,7 @@
-require 'orion6_plugin/orion6'
+require 'orion6_rep'
 
 class TimeClock
-  include Orion6Plugin::Orion6
+  include Orion6Rep
 
   attr_accessor :ip, :tcp_port, :number
 

@@ -17,68 +17,48 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-require "orion6_plugin/multi_message_command"
+require "orion6_rep/command"
 
-module Orion6Plugin
-  class EmployerGet < MultiMessageCommand
+module Orion6Rep
+  class GetSerialNumber < Command
     def initialize(equipment_number, host_address, tcp_port = 3000)
       @equipment_number = equipment_number
       @host_address = host_address
       @tcp_port = tcp_port
+      @reponse_size = RETURNED_RECORD_SIZE
     end
 
     private
-    GET_EMPLOYER_COMMAND = 128
-    EMPLOYER_FIELD_SIZE  = 255
-    EMPLOYER_FIELD_QUANTITY = 263
+    GET_SERIAL_NUMBER_COMMAND = 0x97
+    # TODO: find what is this constant. It's the size of something, perhaps?
+    UNKNOWN_CONSTANT = 0x00
+    SERIAL_NUMBER_FIELD_SIZE  = 0x108
+    SERIAL_NUMBER_FIELD_QUANTITY = 0x2a
+    RETURNED_RECORD_SIZE = 9
 
     def get_command
-      @command ||= GET_EMPLOYER_COMMAND
+      GET_SERIAL_NUMBER_COMMAND
+    end
+
+    def get_unknown_constant
+      UNKNOWN_CONSTANT
     end
 
     def get_field_size
-      EMPLOYER_FIELD_SIZE
+      SERIAL_NUMBER_FIELD_SIZE
     end
 
     def get_field_quantity
-      EMPLOYER_FIELD_QUANTITY
+      SERIAL_NUMBER_FIELD_QUANTITY
     end
 
     def generate_command_data
+      # No data in this command:
       []
     end
 
-    def get_expected_response_size
-      first_message_sent? ? 17 : 264
-    end
-
-    # Here is how the data comes from the REP:
-    # 0 - Document type:
-    #   49 ('1'): CNPJ
-    #   50 ('2'): CPF
-    # 1-14 - Document number (in hexadecimal long)
-    # 15-26 - CEI Document (in hexadecimal long)
-    # 27-176 - Company name
-    # 177-261 - Company location
     def get_data_from_response(payload)
-      hash = {}
-
-      doc_type_code, document_number, cei_document, company_name, company_location = payload.unpack("CA14A12A150A84")
-
-      case doc_type_code
-      when 49
-        hash[:document_type] = :cnpj
-      when 50
-        hash[:document_type] = :cpf
-      else
-        raise "Unknown document type received: #{doc_type_code}"
-      end
-
-      hash[:document_number] = document_number
-      hash[:cei_document] = cei_document
-      hash[:company_name] = company_name.strip
-      hash[:company_location] = company_location.strip
-      hash
+      convert_to_integer_as_big_endian(payload.unpack("C*")).to_s.rjust(17, "0")
     end
   end
 end

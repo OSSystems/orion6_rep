@@ -17,7 +17,7 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-module Orion6Plugin
+module Orion6Rep
   class MultiMessageCommand < Command
     def execute
       # calculate how many messages will be needed:

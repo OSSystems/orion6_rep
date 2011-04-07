@@ -18,12 +18,12 @@
 # e-mail: contato@ossystems.com.br
 
 require File.dirname(__FILE__) + '/../test_helper'
-require 'orion6_plugin/orion6'
+require 'orion6_rep'
 
 class DetectRepsTest < Test::Unit::TestCase
   def test_detect_rep
     puts "Detecting REPs in the network..."
-    detected_reps = Orion6Plugin::Orion6.detect_reps
+    detected_reps = Orion6Rep.detect_reps
     puts "Received: " + detected_reps.inspect
   end
 end

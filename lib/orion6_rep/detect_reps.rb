@@ -18,22 +18,22 @@
 # e-mail: contato@ossystems.com.br
 
 require 'socket'
-require 'orion6_plugin/interface'
+require 'orion6_rep/interface'
 
-module Orion6Plugin
+module Orion6Rep
   class DetectReps
     UDP_DETECTION_PORT = 65535
     UDP_DETECTION_DATA = [0x58].pack("C")
 
     def initialize
-      ifaces_names = Orion6Plugin::Interface.get_active_interfaces_names
+      ifaces_names = Orion6Rep::Interface.get_active_interfaces_names
       # it's useless to try to detect REPs in the localhost
       ifaces_names.delete("lo")
 
       @interfaces = {}
       @responses = {}
       ifaces_names.each do |name|
-        broadcast_address = Orion6Plugin::Interface.broadcast_address(name)
+        broadcast_address = Orion6Rep::Interface.broadcast_address(name)
         @interfaces[name] = {}
         @interfaces[name][:broadcast_addr] = broadcast_address
       end

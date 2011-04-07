@@ -17,9 +17,9 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-require "orion6_plugin/multi_message_command"
+require "orion6_rep/multi_message_command"
 
-module Orion6Plugin
+module Orion6Rep
   class EmployerSet < Command
     def initialize(employer_name, employer_location, document_type, document_number, cei_number, equipment_number, host_address, tcp_port = 3000)
       @employer_name = employer_name

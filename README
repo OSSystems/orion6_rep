@@ -1,8 +1,8 @@
-== Orion 6 Plugin
+== Orion 6 Rep Gem
 
-ste é um plugin para administrar os relógios de ponto
-eletrônico modelo Orion 6 da empresa Henry Equipamentos Eletrônicos e Sistemas
-Ltda. no sistema de Controle de Horário, desenvolvido pela O.S. Systems.
+Este é uma gem para administrar os relógios de ponto eletrônico modelo Orion 6
+da empresa Henry Equipamentos Eletrônicos e Sistemas Ltda. no sistema de
+Controle de Horário, desenvolvido pela O.S. Systems.
 
 Não há muito ainda, mas novas funcionalidades estão sendo adicionadas.
 

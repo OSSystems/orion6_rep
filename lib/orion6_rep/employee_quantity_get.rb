@@ -17,27 +17,26 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-require "orion6_plugin/command"
+require "orion6_rep/multi_message_command"
 
-module Orion6Plugin
-  class GetSerialNumber < Command
+module Orion6Rep
+  class EmployeeQuantityGet < Command
     def initialize(equipment_number, host_address, tcp_port = 3000)
       @equipment_number = equipment_number
       @host_address = host_address
       @tcp_port = tcp_port
-      @reponse_size = RETURNED_RECORD_SIZE
+      @reponse_size = 9
     end
 
     private
-    GET_SERIAL_NUMBER_COMMAND = 0x97
-    # TODO: find what is this constant. It's the size of something, perhaps?
-    UNKNOWN_CONSTANT = 0x00
-    SERIAL_NUMBER_FIELD_SIZE  = 0x108
-    SERIAL_NUMBER_FIELD_QUANTITY = 0x2a
-    RETURNED_RECORD_SIZE = 9
+    GET_EMPLOYEE_QUANTITY_COMMAND = 0x86
+    UNKNOWN_CONSTANT = 0x72
+    EMPLOYEE_FIELD_SIZE  = 0x1
+    EMPLOYEE_FIELD_QUANTITY = 0x6
+    RETURNED_RECORD_SIZE = 87
 
     def get_command
-      GET_SERIAL_NUMBER_COMMAND
+      GET_EMPLOYEE_QUANTITY_COMMAND
     end
 
     def get_unknown_constant
@@ -45,20 +44,37 @@ module Orion6Plugin
     end
 
     def get_field_size
-      SERIAL_NUMBER_FIELD_SIZE
+      EMPLOYEE_FIELD_SIZE
     end
 
     def get_field_quantity
-      SERIAL_NUMBER_FIELD_QUANTITY
+      EMPLOYEE_FIELD_QUANTITY
+    end
+
+    def get_sleep_time
+      1
     end
 
     def generate_command_data
-      # No data in this command:
-      []
+      # this data is probably imutable:
+      data = [0x02, 0x00, 0x01, 0x97, 0x97, 0x03]
+      #      [   2,    0,    1,  151,  151,    3]
+      data << crc_check(data)
+      data
     end
 
     def get_data_from_response(payload)
-      convert_to_integer_as_big_endian(payload.unpack("C*")).to_s.rjust(17, "0")
+      # First byte is aways 2... I don't known why...
+      # The next two bytes are probably the record quantity, in big-endian.
+      record_quantity = (payload[1]*256 + payload[2])
+
+      # The next three bytes appear to be the employee quantity, in big-endian:
+      raw_data = payload[3..(3+record_quantity)]
+      employee_quantity = (raw_data[0] << 16)+(raw_data[1] << 8)+ raw_data[2]
+
+      # The last three bytes appear to be a CRC XOR for the data, a useless 3
+      # and the XOR CRC for the whole payload
+      employee_quantity
     end
   end
 end

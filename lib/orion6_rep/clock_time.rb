@@ -17,7 +17,15 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-module Orion6Plugin
-  class Engine < Rails::Engine
+require "orion6_rep/command"
+
+module Orion6Rep
+  class ClockTime < Command
+    private
+    TIME_FIELD_SIZE  = 11
+
+    def get_field_size
+      TIME_FIELD_SIZE
+    end
   end
 end

@@ -19,14 +19,14 @@
 
 require 'socket'
 require 'ipaddr'
-require 'orion6_plugin/interface'
+require 'orion6_rep/interface'
 
-module Orion6Plugin
+module Orion6Rep
   class ChangeIp
     UDP_PORT = 65535
 
     def initialize(interface, new_ip, rep_data)
-      @broadcast_address = Orion6Plugin::Interface.broadcast_address(interface)
+      @broadcast_address = Orion6Rep::Interface.broadcast_address(interface)
       raise "Network interface '#{interface}' not found or doesn't have a broadcast address" if @broadcast_address.nil?
 
       @new_ip = IPAddr.new(new_ip)

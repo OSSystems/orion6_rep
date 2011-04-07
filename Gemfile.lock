@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    orion6_plugin (0.0.0)
+    orion6_rep (0.0.0)
       afd_parser
       rake (>= 0.8.7)
 
@@ -23,5 +23,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  orion6_plugin!
+  orion6_rep!
   ruby-debug

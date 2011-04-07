@@ -17,9 +17,9 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-require "orion6_plugin/command"
+require "orion6_rep/command"
 
-module Orion6Plugin
+module Orion6Rep
   class RecordsGet < Command
     def initialize(record_id, equipment_number, host_address, tcp_port = 3000)
       @record_id = record_id

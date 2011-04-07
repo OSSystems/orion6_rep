@@ -20,7 +20,7 @@
 require 'socket'
 require 'timeout'
 
-module Orion6Plugin
+module Orion6Rep
   module Communication
     include Timeout
 

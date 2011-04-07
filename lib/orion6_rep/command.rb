@@ -17,9 +17,9 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-require "orion6_plugin/communication"
+require "orion6_rep/communication"
 
-module Orion6Plugin
+module Orion6Rep
   class Command
     def execute
       # first set the header:

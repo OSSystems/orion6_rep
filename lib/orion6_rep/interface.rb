@@ -2,7 +2,7 @@
 
 require 'socket'
 
-module Orion6Plugin
+module Orion6Rep
   module Interface
     # From bits/ioctls.h
     SIOCGIFHWADDR  = 0x8927 # Get hardware address
