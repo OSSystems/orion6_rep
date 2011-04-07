@@ -19,8 +19,8 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class EmployerTest < ActiveSupport::TestCase
-  test "get employer" do
+class EmployerTest < Test::Unit::TestCase
+  def test_get_employer
     ip = ENV["IP"]
     t = TimeClock.new(ip, 3000, 1)
 
@@ -29,7 +29,7 @@ class EmployerTest < ActiveSupport::TestCase
     puts "Received: " + payload.inspect
   end
 
-  test "set employer" do
+  def test_set_employer
     ip = ENV["IP"]
     t = TimeClock.new(ip, 3000, 1)
 

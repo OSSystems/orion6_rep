@@ -87,7 +87,7 @@ module Orion6Plugin
       day = date_array[2]
       hour = date_array[3]
       minute = date_array[4]
-      DateTime.civil(year,month,day,hour,minute).to_time
+      Time.local(year,month,day,hour,minute)
     end
 
     def defineCentury(year)

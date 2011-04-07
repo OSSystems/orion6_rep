@@ -19,8 +19,8 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class EmployeeTest < ActiveSupport::TestCase
-  test "get employees quantity" do
+class EmployeeTest < Test::Unit::TestCase
+  def test_get_employees_quantity
     ip = ENV["IP"]
     t = TimeClock.new(ip, 3000, 1)
 
@@ -29,7 +29,7 @@ class EmployeeTest < ActiveSupport::TestCase
     puts "Received: " + payload.inspect
   end
 
-  test "get employees" do
+  def test_get_employees
     ip = ENV["IP"]
     t = TimeClock.new(ip, 3000, 1)
 
@@ -42,7 +42,7 @@ class EmployeeTest < ActiveSupport::TestCase
     end
   end
 
-  test "set employee" do
+  def test_set_employee
     test_values = {:registration => "12345678901234567890",
       :name => "Test User",
       :pis_number => "123456789012"}

@@ -19,8 +19,8 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class GetSerialTest < ActiveSupport::TestCase
-  test "get REP serial number" do
+class GetSerialTest < Test::Unit::TestCase
+  def test_get_REP_serial_number
     ip = ENV["IP"]
     t = TimeClock.new(ip, 3000, 1)
 

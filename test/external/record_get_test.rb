@@ -19,12 +19,12 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class RecordGetTest < ActiveSupport::TestCase
-  test "get record id" do
+class RecordGetTest < Test::Unit::TestCase
+  def test_get_record_id
     ip = ENV["IP"]
     t = TimeClock.new(ip, 3000, 1)
 
-    time = Date.civil(2011,2,15) + 9.hours
+    time = DateTime.civil(2011,2,15,9)
     puts "Retrieving data from '#{ip}'..."
     payload = t.get_record_id(time)
     puts "Received: " + payload.inspect

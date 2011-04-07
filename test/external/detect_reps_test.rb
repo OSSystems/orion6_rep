@@ -20,8 +20,8 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require 'lib/orion6_plugin/orion6'
 
-class DetectRepsTest < ActiveSupport::TestCase
-  test "detect rep" do
+class DetectRepsTest < Test::Unit::TestCase
+  def test_detect_rep
     puts "Detecting REPs in the network..."
     detected_reps = Orion6Plugin::Orion6.detect_reps
     puts "Received: " + detected_reps.inspect

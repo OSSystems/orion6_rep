@@ -17,17 +17,8 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-ENV["RAILS_ENV"] = "test"
-
-# Show backtrace for the gem:
-ENV['BACKTRACE'] = "true"
-
-require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
-require 'rails/test_help'
-
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 
+require 'rubygems'
+require 'test/unit'
 require 'test/time_clock'
-
-class ActiveSupport::TestCase
-end
