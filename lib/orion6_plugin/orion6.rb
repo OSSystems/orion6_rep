@@ -17,18 +17,18 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-require "lib/orion6_plugin/clock_time/get"
-require "lib/orion6_plugin/clock_time/set"
-require "lib/orion6_plugin/employer_get"
-require "lib/orion6_plugin/employer_set"
-require "lib/orion6_plugin/employee_get"
-require "lib/orion6_plugin/employee_quantity_get"
-require "lib/orion6_plugin/employee_set"
-require "lib/orion6_plugin/get_serial_number"
-require "lib/orion6_plugin/record_id_get"
-require "lib/orion6_plugin/records_get"
-require "lib/orion6_plugin/detect_reps"
-require "lib/orion6_plugin/change_ip"
+require "orion6_plugin/clock_time/get"
+require "orion6_plugin/clock_time/set"
+require "orion6_plugin/employer_get"
+require "orion6_plugin/employer_set"
+require "orion6_plugin/employee_get"
+require "orion6_plugin/employee_quantity_get"
+require "orion6_plugin/employee_set"
+require "orion6_plugin/get_serial_number"
+require "orion6_plugin/record_id_get"
+require "orion6_plugin/records_get"
+require "orion6_plugin/detect_reps"
+require "orion6_plugin/change_ip"
 require "afd_parser"
 
 module Orion6Plugin

@@ -17,7 +17,7 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
-require "lib/orion6_plugin/clock_time"
+require "orion6_plugin/clock_time"
 
 module Orion6Plugin
   class ClockTime::Set < ClockTime

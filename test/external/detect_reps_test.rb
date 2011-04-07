@@ -18,7 +18,7 @@
 # e-mail: contato@ossystems.com.br
 
 require File.dirname(__FILE__) + '/../test_helper'
-require 'lib/orion6_plugin/orion6'
+require 'orion6_plugin/orion6'
 
 class DetectRepsTest < Test::Unit::TestCase
   def test_detect_rep

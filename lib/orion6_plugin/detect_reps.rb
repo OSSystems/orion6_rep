@@ -18,7 +18,7 @@
 # e-mail: contato@ossystems.com.br
 
 require 'socket'
-require 'lib/orion6_plugin/interface'
+require 'orion6_plugin/interface'
 
 module Orion6Plugin
   class DetectReps
