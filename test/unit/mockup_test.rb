@@ -111,6 +111,13 @@ class MockupTest < Test::Unit::TestCase
                  tc.get_records(5).records.collect{|t| t.line_id})
   end
 
+  def test_detect_reps
+    assert_equal({}, TimeClock.detect_reps)
+    detection_data = {"eth0" => {"123.123.123.123" => {:port => 12345, :rep_data => "abcdata"}}}
+    Orion6Rep::Mockup.mock_detection_data = detection_data
+    assert_equal detection_data, TimeClock.detect_reps
+  end
+
   private
   def load_afd_file_fixture
     parser = AfdParser.new(true)

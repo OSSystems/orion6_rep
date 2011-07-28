@@ -3,11 +3,18 @@ require 'orion6_rep'
 module Orion6Rep
   module Mockup
     [:mock_detect_reps, :mock_time, :mock_employer, :mock_employees, :mock_ip,
-     :mock_serial_number, :mock_records].each do |sym|
+     :mock_serial_number, :mock_records, :mock_detection_data].each do |sym|
       class_eval("@@#{sym} = nil unless defined? @@#{sym}; def self.#{sym}; @@#{sym}; end; def self.#{sym}=(obj); @@#{sym} = obj; end", __FILE__, __LINE__ + 1)
     end
 
     self.mock_employees = {}
+    self.mock_detection_data = {}
+
+    Orion6Rep::ClassMethods.module_eval do
+      def detect_reps
+        Orion6Rep::Mockup.mock_detection_data
+      end
+    end
 
     Orion6Rep::InstanceMethods.module_eval do
       def get_time
