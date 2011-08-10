@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Controle de Horas - Sistema para gestão de horas trabalhadas
 # Copyright (C) 2009  O.S. Systems Softwares Ltda.
 
@@ -119,8 +120,7 @@ module Orion6Rep
 
     def get_records(first_id = nil)
       if first_id.nil?
-        date = Time.now - 1.month
-        first_id = get_record_id(date)
+        first_id = 1 # get all the records
       end
 
       id = first_id
