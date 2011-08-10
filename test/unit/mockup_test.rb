@@ -98,8 +98,11 @@ class MockupTest < Test::Unit::TestCase
     parser = load_afd_file_fixture
     tc.set_records parser
     tc.set_employer "Super Company", "FOOBAR St.", :cnpj, 12345678901234, 12345
-    assert_equal([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 999999999],
-                 tc.get_records.records.collect{|t| t.line_id})
+    parser = tc.get_records
+    assert_equal([1, 2, 3, 4, 5, 6, 7, 8, 9],
+                 parser.records.collect{|t| t.line_id})
+    assert !parser.header.nil?
+    assert !parser.trailer.nil?
   end
 
   def test_get_records_specifing_id
@@ -107,8 +110,11 @@ class MockupTest < Test::Unit::TestCase
     parser = load_afd_file_fixture
     tc.set_records parser
     tc.set_employer "Super Company", "FOOBAR St.", :cnpj, 12345678901234, 12345
-    assert_equal([0, 5, 6, 7, 8, 9, 999999999],
-                 tc.get_records(5).records.collect{|t| t.line_id})
+    parser = tc.get_records(5)
+    assert_equal([5, 6, 7, 8, 9],
+                 parser.records.collect{|t| t.line_id})
+    assert !parser.header.nil?
+    assert !parser.trailer.nil?
   end
 
   def test_detect_reps
