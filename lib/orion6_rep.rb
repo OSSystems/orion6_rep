@@ -154,7 +154,7 @@ module Orion6Rep
 
     private
     def get_data_from_detection(ip)
-      response_data = Orion6Rep.detect_reps
+      response_data = self.class.detect_reps
       response_data.each do |collected_interface, interface_data|
         interface_data.each do |collected_ip, data|
           if collected_ip == self.ip
