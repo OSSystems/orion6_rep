@@ -100,7 +100,9 @@ module Orion6Rep
         interface = data.first if interface.nil?
         rep_data = data.last if rep_data.nil?
       end
-
+      if interface.nil? || rep_data.nil?
+        raise "The specified IP address is not an Orion6 REP"
+      end
       command = Orion6Rep::ChangeIp.new(interface, new_ip, rep_data)
       response = command.execute
       return new_ip if response
