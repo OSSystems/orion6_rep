@@ -45,7 +45,13 @@ module Orion6Rep
     def detect_reps
       command = Orion6Rep::DetectReps.new
       command.execute
-      response = command.pool
+      sleep(5)
+      previous_response = nil
+      response = {}
+      while previous_response != response do
+        previous_response = response
+        response = command.pool
+      end
       return response
     end
   end
