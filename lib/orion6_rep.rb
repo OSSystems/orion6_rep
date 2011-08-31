@@ -88,10 +88,18 @@ module Orion6Rep
     end
 
     def get_employees(quantity = nil)
-      quantity = get_employees_quantity if quantity.nil?
-      command = Orion6Rep::EmployeeGet.new(quantity, self.number, self.ip, self.tcp_port)
-      response = command.execute
-      return response
+      employees_quantity = get_employees_quantity if quantity.nil?
+      employees = []
+      call_id = 1
+      while employees_quantity > 0
+        # 11 is the max number of employees retrieved in one call
+        call_quantity = employees_quantity > 11 ? 11 : employees_quantity
+        command = Orion6Rep::EmployeeGet.new(call_id, call_quantity, self.number, self.ip, self.tcp_port)
+        employees += command.execute
+        employees_quantity -= call_quantity
+        call_id += call_quantity
+      end
+      return employees
     end
 
     def set_employee(operation_type, registration, pis_number, name)

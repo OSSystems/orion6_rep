@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Controle de Horas - Sistema para gestão de horas trabalhadas
 # Copyright (C) 2009  O.S. Systems Softwares Ltda.
 
@@ -21,7 +22,9 @@ require "orion6_rep/multi_message_command"
 
 module Orion6Rep
   class EmployeeGet < Command
-    def initialize(employees_number, equipment_number, host_address, tcp_port = 3000)
+    def initialize(first_employee, employees_number, equipment_number, host_address, tcp_port = 3000)
+      raise "employees_number must be from 1 to 11" if employees_number > 12 || employees_number < 1
+      @first_employee = first_employee
       @employees_number = employees_number
       @equipment_number = equipment_number
       @host_address = host_address
@@ -59,7 +62,9 @@ module Orion6Rep
       end
 
       # this data can change:
-      data = [0x02, 0x00, 0x04, 0x98, 0x00, 0x01]
+      data = [0x02, 0x00, 0x04, 0x98]
+      data << divide_by_256(@first_employee)
+      data << (@first_employee & 255)
       data << @employees_number
       data << internal_crc_check(data)
       data << 0x03
