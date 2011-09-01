@@ -88,7 +88,7 @@ module Orion6Rep
     end
 
     def get_employees(quantity = nil)
-      employees_quantity = get_employees_quantity if quantity.nil?
+      employees_quantity = quantity.nil? ? get_employees_quantity : quantity
       employees = []
       call_id = 1
       while employees_quantity > 0
