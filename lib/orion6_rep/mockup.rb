@@ -50,7 +50,7 @@ module Orion6Rep
         when :add, :edit
           Orion6Rep::Mockup.mock_employees[registration.to_i] = {:pis_number => pis_number, :name => name}
         when :remove
-          Orion6Rep::Mockup.mock_employees.delete registration
+          Orion6Rep::Mockup.mock_employees.delete registration.to_i
         else
           raise "Unknown employee operation type received: #{operation_type.to_s}"
         end
