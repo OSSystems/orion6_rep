@@ -45,12 +45,13 @@ module Orion6Rep
     def detect_reps
       command = Orion6Rep::DetectReps.new
       command.execute
-      sleep(5)
+      runtime = Time.now
       previous_response = nil
       response = {}
-      while previous_response != response do
-        previous_response = response
+      while runtime + 5.seconds > Time.now do
         response = command.pool
+        sleep(0.2) if previous_response == response
+        previous_response = response
       end
       return response
     end
