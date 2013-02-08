@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Controle de Horas - Sistema para gestão de horas trabalhadas
 # Copyright (C) 2009  O.S. Systems Softwares Ltda.
 
@@ -47,7 +48,7 @@ module Orion6Rep
 
     private
     def prepare_payload_data
-      @rep_data + "/" + @new_ip.to_s
+      @rep_data + "//" + @new_ip.to_s
     end
   end
 end
