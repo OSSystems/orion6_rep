@@ -10,18 +10,19 @@ GEM
   specs:
     afd_parser (0.0.1)
       rake (>= 0.8.7)
-    columnize (0.3.2)
-    linecache (0.43)
-    rake (0.8.7)
-    ruby-debug (0.10.4)
-      columnize (>= 0.1)
-      ruby-debug-base (~> 0.10.4.0)
-    ruby-debug-base (0.10.4)
-      linecache (>= 0.3)
+    columnize (0.3.6)
+    debugger (1.4.0)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.1.1)
+      debugger-ruby_core_source (~> 1.2.0)
+    debugger-linecache (1.1.2)
+      debugger-ruby_core_source (>= 1.1.1)
+    debugger-ruby_core_source (1.2.0)
+    rake (10.0.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  debugger
   orion6_rep!
-  ruby-debug
