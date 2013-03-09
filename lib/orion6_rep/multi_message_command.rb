@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Controle de Horas - Sistema para gestão de horas trabalhadas
 # Copyright (C) 2009  O.S. Systems Softwares Ltda.
 
@@ -89,24 +90,8 @@ module Orion6Rep
       header
     end
 
-    def get_command
-      raise "This method should be overriden by the subclass"
-    end
-
-    def get_field_size
-      raise "This method should be overriden by the subclass"
-    end
-
-    def get_field_quantity
-      raise "This method should be overriden by the subclass"
-    end
-
     def generate_command_data
       []
-    end
-
-    def get_data_from_response(payload)
-      raise "This method should be overriden by the subclass"
     end
 
     def first_message_sent?

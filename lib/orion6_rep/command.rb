@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Controle de Horas - Sistema para gestão de horas trabalhadas
 # Copyright (C) 2009  O.S. Systems Softwares Ltda.
 
@@ -115,23 +116,23 @@ module Orion6Rep
     end
 
     def get_command
-      raise "This method should be overriden by the subclass"
+      raise_not_implemented_error
     end
 
     def get_field_size
-      raise "This method should be overriden by the subclass"
+      raise_not_implemented_error
     end
 
     def get_field_quantity
-      raise "This method should be overriden by the subclass"
+      raise_not_implemented_error
     end
 
     def generate_command_data
-      raise "This method should be overriden by the subclass"
+      raise_not_implemented_error
     end
 
     def get_data_from_response(payload)
-      raise "This method should be overriden by the subclass"
+      raise_not_implemented_error
     end
 
     def crc_check(data)
@@ -165,6 +166,11 @@ module Orion6Rep
       def convert_to_integer_as_big_endian(integer_array)
         convert_to_integer_as_little_endian(integer_array.reverse)
       end
+    end
+
+    private
+    def raise_not_implemented_error
+      raise NotImplementedError.new "This method should be overriden by the subclass #{self.class.to_s}"
     end
   end
 end
