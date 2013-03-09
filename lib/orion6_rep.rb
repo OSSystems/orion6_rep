@@ -48,7 +48,7 @@ module Orion6Rep
       runtime = Time.now
       previous_response = nil
       response = {}
-      while runtime + 5.seconds > Time.now do
+      while runtime + 5 > Time.now do
         response = command.pool
         sleep(0.2) if previous_response == response
         previous_response = response
