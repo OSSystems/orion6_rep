@@ -1,14 +1,14 @@
 PATH
   remote: .
   specs:
-    orion6_rep (0.0.0)
+    orion6_rep (0.1.0)
       afd_parser
       rake (>= 0.8.7)
 
 GEM
   remote: http://rubygems.org/
   specs:
-    afd_parser (0.0.1)
+    afd_parser (0.1.0)
       rake (>= 0.8.7)
     columnize (0.3.6)
     debugger (1.4.0)
