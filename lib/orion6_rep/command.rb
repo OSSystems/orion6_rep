@@ -77,11 +77,11 @@ module Orion6Rep
     end
 
     def check_response_header(response)
-      crc_check(response[0..6]) == response[7]
+      crc_check(response[0..6]) == response[7].ord
     end
 
     def check_response_payload(response)
-      crc_check(response[8..-2]) == response[-1]
+      crc_check(response[8..-2]) == response[-1].ord
     end
 
     def get_response_payload(response)

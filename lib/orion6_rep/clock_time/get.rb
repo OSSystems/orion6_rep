@@ -76,18 +76,18 @@ module Orion6Rep
     end
 
     def parse_date(date_array)
-      year = defineCentury(date_array[0])
-      month = date_array[1]
-      day = date_array[2]
+      year = defineCentury(date_array[0].ord)
+      month = date_array[1].ord
+      day = date_array[2].ord
       Date.civil(year,month,day)
     end
 
     def parse_time(date_array)
-      year = defineCentury(date_array[0])
-      month = date_array[1]
-      day = date_array[2]
-      hour = date_array[3]
-      minute = date_array[4]
+      year = defineCentury(date_array[0].ord)
+      month = date_array[1].ord
+      day = date_array[2].ord
+      hour = date_array[3].ord
+      minute = date_array[4].ord
       Time.local(year,month,day,hour,minute)
     end
 

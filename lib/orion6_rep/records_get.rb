@@ -56,10 +56,10 @@ module Orion6Rep
       proc do |partial_data|
         if partial_data.size >= DATA_SIZE_LAST_POSITION
           data_size_array = partial_data[9..10]
-          detected_size = (data_size_array[0]*256 + data_size_array[1]) + 14
-          return detected_size
+          detected_size = (data_size_array[0].ord*256 + data_size_array[1].ord) + 14
+          detected_size
         else
-          return DATA_SIZE_LAST_POSITION
+          DATA_SIZE_LAST_POSITION
         end
       end
     end

@@ -67,11 +67,11 @@ module Orion6Rep
     def get_data_from_response(payload)
       # First byte is aways 2... I don't known why...
       # The next two bytes are probably the record quantity, in big-endian.
-      record_quantity = (payload[1]*256 + payload[2])
+      record_quantity = (payload[1].ord*256 + payload[2].ord)
 
       # The next three bytes appear to be the employee quantity, in big-endian:
       raw_data = payload[3..(3+record_quantity)]
-      employee_quantity = (raw_data[0] << 16)+(raw_data[1] << 8)+ raw_data[2]
+      employee_quantity = (raw_data[0].ord << 16)+(raw_data[1].ord << 8)+ raw_data[2].ord
 
       # The last three bytes appear to be a CRC XOR for the data, a useless 3
       # and the XOR CRC for the whole payload

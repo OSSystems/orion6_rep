@@ -74,7 +74,7 @@ module Orion6Rep
     def get_data_from_response(payload)
       # first byte is aways 2... I don't known why...
       # The next two bytes are probably the record quantity, in big-endian.
-      record_quantity = (payload[1]*256 + payload[2])
+      record_quantity = (payload[1].ord*256 + payload[2].ord)
 
       # byte #4 it's the beggining of the data:
       start_offset = 4
