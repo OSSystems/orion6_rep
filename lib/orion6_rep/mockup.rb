@@ -22,7 +22,7 @@ module Orion6Rep
       end
 
       def set_time(time, start_dst = nil, end_dst = nil)
-        Orion6Rep::Mockup.mock_time = time
+        Orion6Rep::Mockup.mock_time = [time, start_dst, end_dst]
       end
 
       def get_employer

@@ -35,7 +35,7 @@ class MockupTest < Test::Unit::TestCase
     time = Time.now
     tc = TimeClock.new "0.0.0.0", 0, 1
     tc.set_time time
-    assert_equal time, tc.get_time
+    assert_equal [time, nil, nil], tc.get_time
   end
 
   def test_get_set_employer
