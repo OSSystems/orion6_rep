@@ -1,3 +1,7 @@
+## Orion6 Rep 0.1.1 ##
+
+*   Updated gem dependencies
+
 ## Orion6 Rep 0.1.0 ##
 
 *   Upgraded to Ruby 2.0.0.
