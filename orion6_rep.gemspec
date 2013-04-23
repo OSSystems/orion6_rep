@@ -17,4 +17,5 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency('rake', '>= 0.8.7')
   gem.add_dependency('afd_parser')
+  gem.add_dependency('system-getifaddrs')
 end

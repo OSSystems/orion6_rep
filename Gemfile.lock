@@ -1,9 +1,10 @@
 PATH
   remote: .
   specs:
-    orion6_rep (0.1.0)
+    orion6_rep (0.1.1)
       afd_parser
       rake (>= 0.8.7)
+      system-getifaddrs
 
 GEM
   remote: http://rubygems.org/
@@ -18,6 +19,7 @@ GEM
     debugger-linecache (1.2.0)
     debugger-ruby_core_source (1.2.0)
     rake (10.0.4)
+    system-getifaddrs (0.1.5)
 
 PLATFORMS
   ruby
