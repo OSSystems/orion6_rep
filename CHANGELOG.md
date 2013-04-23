@@ -1,3 +1,7 @@
+## Orion6 Rep 0.2.0 ##
+
+*   Use gem system-getifaddrs to get interfaces names.
+
 ## Orion6 Rep 0.1.1 ##
 
 *   Updated gem dependencies
