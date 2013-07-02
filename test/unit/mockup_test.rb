@@ -124,6 +124,23 @@ class MockupTest < Test::Unit::TestCase
     assert_equal detection_data, TimeClock.detect_reps
   end
 
+  def test_on_communication_success
+    tc = TimeClock.new "0.0.0.0", 0, 1
+    assert !TimeClock.instance_methods(false).include?(:on_communication_success)
+    tc.set_employer "Super Company", "FOOBAR St.", :cnpj, 12345678901234, 12345
+
+    TimeClock.class_eval do
+      attr_reader :last_communication_method
+      def on_communication_success(method)
+        @last_communication_method = method
+      end
+    end
+    assert TimeClock.instance_methods(false).include?(:on_communication_success)
+    tc = TimeClock.new "0.0.0.0", 0, 1
+    tc.set_employer "Super Company", "FOOBAR St.", :cnpj, 12345678901234, 12345
+    assert_equal :set_employer, tc.last_communication_method
+  end
+
   private
   def load_afd_file_fixture
     parser = AfdParser.new(true)

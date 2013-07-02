@@ -61,30 +61,35 @@ module Orion6Rep
     def get_time
       command = Orion6Rep::ClockTime::Get.new(self.number, self.ip, self.tcp_port)
       response = command.execute
+      on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
       return response
     end
 
     def set_time(time, start_dst = nil, end_dst = nil)
       command = Orion6Rep::ClockTime::Set.new(time, start_dst, end_dst, self.number, self.ip, self.tcp_port)
       response = command.execute
+      on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
       return response
     end
 
     def get_employer
       command = Orion6Rep::EmployerGet.new(self.number, self.ip, self.tcp_port)
       response = command.execute
+      on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
       return response
     end
 
     def set_employer(employer_name, employer_location, document_type, document_number, cei_number)
       command = Orion6Rep::EmployerSet.new(employer_name, employer_location, document_type, document_number, cei_number, self.number, self.ip, self.tcp_port)
       response = command.execute
+      on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
       return response
     end
 
     def get_employees_quantity
       command = Orion6Rep::EmployeeQuantityGet.new(self.number, self.ip, self.tcp_port)
       response = command.execute
+      on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
       return response
     end
 
@@ -100,12 +105,14 @@ module Orion6Rep
         employees_quantity -= call_quantity
         call_id += call_quantity
       end
+      on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
       return employees
     end
 
     def set_employee(operation_type, registration, pis_number, name)
       command = Orion6Rep::EmployeeSet.new(operation_type, registration, pis_number, name, self.number, self.ip, self.tcp_port)
       response = command.execute
+      on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
       return response
     end
 
@@ -120,18 +127,23 @@ module Orion6Rep
       end
       command = Orion6Rep::ChangeIp.new(interface, new_ip, rep_data)
       response = command.execute
-      return new_ip if response
+      if response
+        on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
+        return new_ip
+      end
     end
 
     def get_serial_number
       command = Orion6Rep::GetSerialNumber.new(self.number, self.ip, self.tcp_port)
       response = command.execute
+      on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
       return response
     end
 
     def get_record_id(datetime)
       command = Orion6Rep::RecordIdGet.new(datetime, self.number, self.ip, self.tcp_port)
       response = command.execute
+      on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
       return response
     end
 

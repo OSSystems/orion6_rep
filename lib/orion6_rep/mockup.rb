@@ -18,29 +18,37 @@ module Orion6Rep
 
     Orion6Rep::InstanceMethods.module_eval do
       def get_time
+        on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
         Orion6Rep::Mockup.mock_time
       end
 
       def set_time(time, start_dst = nil, end_dst = nil)
         Orion6Rep::Mockup.mock_time = [time, start_dst, end_dst]
+        on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
+        Orion6Rep::Mockup.mock_time
       end
 
       def get_employer
+        on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
         Orion6Rep::Mockup.mock_employer
       end
 
       def set_employer(employer_name, employer_location, document_type, document_number, cei_number)
         Orion6Rep::Mockup.mock_employer = {:company_name => employer_name, :company_location => employer_location, :document_type => document_type, :document_number => document_number, :cei_number => cei_number}
+        on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
+        Orion6Rep::Mockup.mock_employer
       end
 
       def get_employees_quantity
         employees = Orion6Rep::Mockup.mock_employees
+        on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
         (employees.nil? || employees.empty?) ? 0 : employees.size
       end
 
       def get_employees(quantity = get_employees_quantity)
         Orion6Rep::Mockup.mock_employees.keys.sort[0..quantity].collect do |registration|
           employee = Orion6Rep::Mockup.mock_employees[registration]
+          on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
           {:registration => registration, :pis_number => employee[:pis_number], :name => employee[:name]}
         end
       end
@@ -48,19 +56,24 @@ module Orion6Rep
       def set_employee(operation_type, registration, pis_number, name)
         case operation_type
         when :add, :edit
-          Orion6Rep::Mockup.mock_employees[registration.to_i] = {:pis_number => pis_number, :name => name}
+          data = Orion6Rep::Mockup.mock_employees[registration.to_i] = {:pis_number => pis_number, :name => name}
         when :remove
-          Orion6Rep::Mockup.mock_employees.delete registration.to_i
+          data = Orion6Rep::Mockup.mock_employees.delete registration.to_i
         else
           raise "Unknown employee operation type received: #{operation_type.to_s}"
         end
+        on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
+        data
       end
 
       def change_ip(new_ip, interface = nil, rep_data = nil)
         Orion6Rep::Mockup.mock_ip = new_ip
+        on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
+        Orion6Rep::Mockup.mock_ip
       end
 
       def get_serial_number
+        on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
         Orion6Rep::Mockup.mock_serial_number
       end
 
@@ -68,6 +81,7 @@ module Orion6Rep
         record = Orion6Rep::Mockup.mock_records.records.detect do |record|
           record.respond_to?(:creation_time) && record.creation_time >= datetime
         end
+        on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
         record ? record.line_id : nil
       end
 
@@ -96,6 +110,8 @@ module Orion6Rep
 
       def set_records(parser)
         Orion6Rep::Mockup.mock_records = parser
+        on_communication_success(__method__.to_sym) if respond_to?(:on_communication_success)
+        Orion6Rep::Mockup.mock_records
       end
     end
   end
