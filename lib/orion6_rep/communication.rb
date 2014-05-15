@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Controle de Horas - Sistema para gestão de horas trabalhadas
 # Copyright (C) 2009  O.S. Systems Softwares Ltda.
 
@@ -25,7 +26,7 @@ module Orion6Rep
     include Timeout
 
     class << self
-      def communicate(host_address, port, payload, expected_response_size, timeout_time = 3, max_attempts = 3)
+      def communicate(host_address, port, payload, expected_response_size, timeout_time=60, max_attempts = 3)
         attempt = 0
 
         while attempt < max_attempts do
