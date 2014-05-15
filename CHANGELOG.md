@@ -1,3 +1,8 @@
+## Orion6 Rep 0.2.1 ##
+
+*   Increase no data timeout to 60 seconds.
+*   Updated gem dependencies
+
 ## Orion6 Rep 0.2.0 ##
 
 *   Use gem system-getifaddrs to get interfaces names.
