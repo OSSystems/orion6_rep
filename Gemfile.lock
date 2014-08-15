@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    orion6_rep (0.2.1)
+    orion6_rep (0.2.2)
       afd_parser
       rake (>= 0.8.7)
       system-getifaddrs

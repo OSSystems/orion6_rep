@@ -1,3 +1,7 @@
+## Orion6 Rep 0.2.2 ##
+
+*   Upgraded gems
+
 ## Orion6 Rep 0.2.1 ##
 
 *   Increase no data timeout to 60 seconds.
