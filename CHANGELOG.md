@@ -1,3 +1,7 @@
+## Orion6 Rep 0.2.3 ##
+
+*   Upgraded afd_parser gem
+
 ## Orion6 Rep 0.2.2 ##
 
 *   Upgraded gems
