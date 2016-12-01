@@ -1,3 +1,7 @@
+## Orion6 Rep 0.2.5 ##
+
+*   Fix socket opening timeout validation
+
 ## Orion6 Rep 0.2.4 ##
 
 *   Timeout on socket connections
