@@ -1,3 +1,9 @@
+## Orion6 Rep 0.2.4 ##
+
+*   Timeout on socket connections
+*   Upgrade afd_parser gem
+*   Upgrade Rake gem
+
 ## Orion6 Rep 0.2.3 ##
 
 *   Upgraded afd_parser gem
