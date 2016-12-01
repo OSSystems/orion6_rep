@@ -30,14 +30,23 @@ module Orion6Rep
         attempt = 0
 
         while attempt < max_attempts do
-          socket = TCPSocket.open(host_address, port)
+          socket = nil
           begin
-            received_data = nil
+            timeout(timeout_time) {
+              socket = TCPSocket.open(host_address, port)
+            }
+          rescue Timeout::Error => e
+            next # abort this attempt and try again
+          end
+
+          received_data = nil
+
+          begin
             received_data = send_receive_data(socket, payload, expected_response_size, timeout_time)
           rescue Timeout::Error => e
-            received_data = nil
+            socket.close
           end
-          socket.close
+
           break unless received_data.nil?
           attempt += 1
         end
