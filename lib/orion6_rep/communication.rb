@@ -36,15 +36,17 @@ module Orion6Rep
               socket = TCPSocket.open(host_address, port)
             }
           rescue Timeout::Error => e
-            next # abort this attempt and try again
+            socket = nil
           end
 
           received_data = nil
 
-          begin
-            received_data = send_receive_data(socket, payload, expected_response_size, timeout_time)
-          rescue Timeout::Error => e
-            socket.close
+          if socket
+            begin
+              received_data = send_receive_data(socket, payload, expected_response_size, timeout_time)
+            rescue Timeout::Error => e
+              socket.close
+            end
           end
 
           break unless received_data.nil?
