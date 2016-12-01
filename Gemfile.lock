@@ -16,7 +16,7 @@ GEM
       debugger-linecache (~> 1.2)
     columnize (0.8.9)
     debugger-linecache (1.2.0)
-    rake (10.3.2)
+    rake (11.1.2)
     system-getifaddrs (0.2.1)
 
 PLATFORMS
