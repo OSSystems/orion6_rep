@@ -1,3 +1,7 @@
+## Orion6 Rep 0.2.6 ##
+
+*   Upgrade project gems
+
 ## Orion6 Rep 0.2.5 ##
 
 *   Fix socket opening timeout validation
