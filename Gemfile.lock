@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    orion6_rep (0.2.5)
+    orion6_rep (0.2.6)
       afd_parser
       rake (>= 0.8.7)
       system-getifaddrs
@@ -9,14 +9,10 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    afd_parser (0.1.5)
+    afd_parser (0.2.1)
       rake (>= 0.8.7)
-    byebug (3.2.0)
-      columnize (~> 0.8)
-      debugger-linecache (~> 1.2)
-    columnize (0.8.9)
-    debugger-linecache (1.2.0)
-    rake (11.1.2)
+    byebug (10.0.2)
+    rake (12.3.1)
     system-getifaddrs (0.2.1)
 
 PLATFORMS
@@ -25,3 +21,6 @@ PLATFORMS
 DEPENDENCIES
   byebug
   orion6_rep!
+
+BUNDLED WITH
+   1.16.0
