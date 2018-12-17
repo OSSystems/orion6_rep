@@ -77,12 +77,6 @@ class MockupTest < Test::Unit::TestCase
     assert_equal "0.0.0.1", Orion6Rep::Mockup.mock_ip
   end
 
-  def test_get_set_ip
-    tc = TimeClock.new "0.0.0.0", 0, 1
-    tc.change_ip("0.0.0.1")
-    assert_equal "0.0.0.1", Orion6Rep::Mockup.mock_ip
-  end
-
   def test_get_record_id
     tc = TimeClock.new "0.0.0.0", 0, 1
     parser = load_afd_file_fixture
