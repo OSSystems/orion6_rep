@@ -18,6 +18,7 @@
 # Rua Clóvis Gularte Candiota 132, Pelotas-RS, Brasil.
 # e-mail: contato@ossystems.com.br
 
+$VERBOSE = nil
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 
 require 'rubygems'
