@@ -24,4 +24,5 @@ gemspec
 
 group :development, :test do
   gem "byebug"
+  gem "test-unit"
 end
