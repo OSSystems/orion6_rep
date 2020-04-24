@@ -11,7 +11,7 @@ GEM
   specs:
     afd_parser (0.2.1)
       rake (>= 0.8.7)
-    byebug (11.0.1)
+    byebug (11.1.3)
     power_assert (1.1.5)
     rake (13.0.1)
     system-getifaddrs (0.2.1)
